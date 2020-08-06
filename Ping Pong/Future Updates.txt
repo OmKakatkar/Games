@@ -1,0 +1,14 @@
+Add Bricks
+Determine score
+Start Menu
+Quit to menu
+Quit Game
+Hearts
+Colored bricks and advanced functionality
+Sound
+Power Ups
+Name of the game
+High Score
+Level
+No option to resize window
+Resize everything as per window
