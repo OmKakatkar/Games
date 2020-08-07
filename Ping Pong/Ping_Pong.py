@@ -28,13 +28,13 @@ ball = turtle.Turtle()
 ball.shape("circle")
 ball.color("white")
 ball.pu()
-ball.dx = 0.5
-ball.dy = 0.5
+ball.dx = 0.4
+ball.dy = 0.4
 
 def borderCheck():
     borderX = 380
     borderY = 280
-    if ball.ycor() > borderY:
+    if ball.ycor() > borderY + 10:
         ball.sety(borderY)
         ball.dy = -ball.dy
         
@@ -42,13 +42,16 @@ def borderCheck():
         ball.sety(-borderY)
         ball.dy = -ball.dy
     
-    if ball.xcor() < -borderX:
+    if ball.xcor() < -borderX - 10:
         ball.setx(-borderX)
         ball.dx = -ball.dx
 
     if ball.xcor() > borderX:
         ball.setx(borderX)
         ball.dx = -ball.dx
+
+def paddle_a_check():
+    if ball
 
 def paddle_a_up():
     if paddle_a.ycor() < 260:
@@ -75,5 +78,7 @@ while True:
     ball.setx(ball.xcor() + ball.dx)
 
     borderCheck()
+    paddle_a_check()
+    paddle_b_check()
     
 win.done()
