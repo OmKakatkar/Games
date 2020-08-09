@@ -1,0 +1,9 @@
+Score system changes
+	Point increase if hit, decrease if missed.
+	10 point first is the winner
+
+Game pause
+game starting
+Player Name
+Paddle color
+Ball color
