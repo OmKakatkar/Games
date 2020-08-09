@@ -1,5 +1,6 @@
 import turtle
 import winsound
+import time
 
 #Create window and setup
 win = turtle.Screen()
@@ -32,8 +33,8 @@ ball.speed(0)
 ball.shape("circle")
 ball.color("white")
 ball.pu()
-ball.dx = 0.3
-ball.dy = 0.3
+ball.dx = 250
+ball.dy = 250
 
 #Create Pen
 pen = turtle.Turtle()
@@ -136,13 +137,18 @@ win.onkeypress(paddle_b_dn, "Down")
 
 ##win.onkeypress(game_pause,"p")
 
-while running:
+last_time = time.perf_counter()
 
+while running:
+    current_time = time.perf_counter()
+    elapsed_time = current_time - last_time
+    last_time = current_time
+    
     win.update()
     
     #Move the ball
-    ball.sety(ball.ycor() + ball.dy)
-    ball.setx(ball.xcor() + ball.dx)
+    ball.sety(ball.ycor() + ball.dy * elapsed_time)
+    ball.setx(ball.xcor() + ball.dx * elapsed_time)
 
     #paddle_a.sety(paddle_a.ycor() + 10)
     #paddle_b.sety(paddle_a.ycor() + 10)
