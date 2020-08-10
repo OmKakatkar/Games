@@ -10,6 +10,7 @@ There are 3 screens currently. (Start, Actual Game, End)
 import turtle
 import winsound
 import time
+import random
 
 #Create window and setup
 win = turtle.Screen()
@@ -25,7 +26,7 @@ paddle_a.shape("square")
 paddle_a.color("white")
 paddle_a.shapesize(stretch_wid = 4, stretch_len = 1)
 paddle_a.pu()
-paddle_a.goto(-370,-250)
+paddle_a.goto(-370,50)
 
 #Create paddle B
 paddle_b = turtle.Turtle()
@@ -34,7 +35,7 @@ paddle_b.shape("square")
 paddle_b.color("white")
 paddle_b.shapesize(stretch_wid = 4, stretch_len = 1)
 paddle_b.pu()
-paddle_b.goto(360,260)
+paddle_b.goto(360,50)
 
 #Create the ball
 ball = turtle.Turtle()
@@ -42,8 +43,26 @@ ball.speed(0)
 ball.shape("circle")
 ball.color("white")
 ball.pu()
-ball.dx = 250
-ball.dy = 250
+ball_position = []
+
+for x_pos in range(-250,-180,20):
+    for y_pos in range(-300,0,20):
+        ball_position.append((x_pos,y_pos))
+for x_pos in range(180,250,20):
+    for y_pos in range(0,300,20):
+        ball_position.append((x_pos,y_pos))
+ball.goto(random.choice(ball_position))
+
+speed = []
+for number in range(-250,-150,20):
+    speed.append(number)
+for number in range(150,250,20):
+    speed.append(number)
+if ball.xcor() < 0:
+    ball.dx = 250
+elif ball.xcor() > 0:
+    ball.dx = -250
+ball.dy = random.choice(speed)
 
 #Create Pen
 pen = turtle.Turtle()
@@ -83,26 +102,33 @@ def borderCheck():
     
     if ball.ycor() > borderY + 10:
         ball.sety(borderY + 10)
+        ball.dy = 300
         ball.dy = -ball.dy
         winsound.PlaySound("Sounds/ping-pong-ball-hit-wall.wav", winsound.SND_ASYNC)
             
     if ball.ycor() < -borderY:
         ball.sety(-borderY)
+        ball.dy = -300
         ball.dy = -ball.dy
         winsound.PlaySound("Sounds/ping-pong-ball-hit-wall.wav", winsound.SND_ASYNC)
     
     if ball.xcor() < -borderX - 10:
-        ball.goto(0,0)
+        ball.goto(-250,0)
         ball.dx = -ball.dx
         score_b += 1
         win.ontimer(score_update(),500)
         
+        ball.dx = 250
+        ball.dy = random.choice(speed)
+        
     if ball.xcor() > borderX:
-        ball.goto(0,0)
+        ball.goto(250,0)
         ball.dx = -ball.dx
         score_a += 1
         win.ontimer(score_update(),500)
-                
+        ball.dx = -250
+        ball.dy = random.choice(speed)
+        
 def paddle_a_check():
     """
     Checks the position of the ball wrt paddle_a.
@@ -171,7 +197,7 @@ def score_update():
     global score_a,score_b
     pen.clear()
     pen.write("Player A: {}  Player B: {}".format(score_a,score_b), align="center", font=("Courier", 24, "normal"))
-
+    
 def game_start():
     global game_state
     pen.clear()
@@ -188,14 +214,26 @@ def game_start():
         #winsound.PlaySound("Sounds/whistle_blow_short.mp3", winsound.SND_FILENAME)
 
     elif game_state == "Game_Over":
-        paddle_a.goto(-370,-250)
-        paddle_b.goto(360,260)
-        ball.goto(0,0)
+        paddle_a.goto(-370,50)
+        paddle_b.goto(360,50)
+        ball.goto(random.choice(ball_position))
+        if ball.xcor() < 0:
+            ball.dx = 250
+        elif ball.xcor() > 0:
+            ball.dx = -250
+        ball.dy = random.choice(speed) 
         game_state = "Run"   
         
 def game_end():
     if game_state == "Game_Over":
-        win.bye()
+        pen.clear()
+        pen.goto(0,0)
+        timer = 90
+##        while(timer != 0):
+##            pen.clear()
+##            pen.write("THANK YOU FOR PLAYING!!!", align="center", font=("Arial",32,"bold"))
+##            timer -= 1
+        win.bye()       
     
 #incomplete
 def toggle_pause():
@@ -239,7 +277,7 @@ while True:
         pen.clear()
         pen.goto(0,200)
         pen.color("black")
-        pen.write("Press 'Y' to Start. ", align="center", font=("Arial", 30, "italic"))
+        pen.write("Score 5 points to win.\n   Press 'Y' to Start. ", align="center", font=("Arial", 30, "italic"))
         last_time = time.perf_counter()
         
     elif game_state == "Run":
@@ -272,7 +310,7 @@ while True:
             #paddle_b.sety(ball.ycor())
 
             #Check the winner    
-            if score_a == 3:
+            if score_a == 5:
                 pen.clear()
                 pen.goto(0,0)
                 pen.write("Player A Wins!!!", align="center", font=("Courier", 40, "bold"))
@@ -283,7 +321,7 @@ while True:
                 pen.goto(0,260)
                 game_state = "Game_Over"
                 
-            elif score_b == 3 :
+            elif score_b == 5 :
                 pen.clear()
                 pen.goto(0,0)
                 pen.write("Player B Wins!!!", align="center", font=("Courier", 40, "bold"))
@@ -295,7 +333,6 @@ while True:
                 game_state = "Game_Over"
 
         elif is_paused :
-            print("Paused")
             pass
             
     elif game_state == "Game_Over":

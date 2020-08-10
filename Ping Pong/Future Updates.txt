@@ -1,9 +1,19 @@
-Score system changes
-	Point increase if hit, decrease if missed.
-	10 point first is the winner
+Add docstrings and comments wherever necessary.
 
-Game pause
-game starting
-Player Name
-Paddle color
-Ball color
+Alternate Score System:
+	Point increase if hit, decrease 	if missed.
+	10 point first is the winner.
+
+Fix the pause button bug.
+Add music for every point.
+Add a Thank You Screen before ending.
+Fix the victory screen bug of unable to quit.
+
+Implement in pygame for simultaneous movement of both paddles.
+
+Add Settings Menu
+	Add Player Name
+	Ball Speed Control (Increase 		or decrease)(Paddle speed may 		change that way too idk.)
+	Add Paddle color
+	Add Ball color
+	Sound On/Off toggle
