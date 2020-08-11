@@ -251,9 +251,9 @@ def toggle_pause():
 
 ##incomplete
 ##def screen_settings(x,y):
-      """
-      This function changes the state to Settings window, thus invoking the settings menu.
-      """
+##      """
+##      This function changes the state to Settings window, thus invoking the settings menu.
+##      """
 ##    global game_state
 ##    if game_state == "Start_Screen":
 ##        if (x > 281 and x < 358) and (y > 273 and y < 292):
