@@ -4,10 +4,7 @@ Alternate Score System:
 	Point increase if hit, decrease 	if missed.
 	10 point first is the winner.
 
-Fix the pause button bug.
 Add music for every point.
-Add a Thank You Screen before ending.
-Fix the victory screen bug of unable to quit.
 
 Implement in pygame for simultaneous movement of both paddles.
 

@@ -117,7 +117,6 @@ def borderCheck():
         ball.dx = -ball.dx
         score_b += 1
         win.ontimer(score_update(),500)
-        
         ball.dx = 250
         ball.dy = random.choice(speed)
         
@@ -200,8 +199,9 @@ def score_update():
     
 def game_start():
     global game_state
-    pen.clear()
+    winsound.PlaySound(None, winsound.SND_PURGE)
     pen.goto(0,260)
+    pen.clear()
     score_update()
     paddle_a.st()
     paddle_b.st()
@@ -211,7 +211,6 @@ def game_start():
         game_state = "Run"
         win.bgpic("nopic")
         pen.color("white")        
-        #winsound.PlaySound("Sounds/whistle_blow_short.mp3", winsound.SND_FILENAME)
 
     elif game_state == "Game_Over":
         paddle_a.goto(-370,50)
@@ -223,19 +222,16 @@ def game_start():
             ball.dx = -250
         ball.dy = random.choice(speed) 
         game_state = "Run"   
+    winsound.PlaySound("Sounds/whistle_blow_short.wav", winsound.SND_ASYNC)
         
 def game_end():
+    global game_state
     if game_state == "Game_Over":
+        game_state = "Exit"
         pen.clear()
-        pen.goto(0,0)
-        timer = 90
-##        while(timer != 0):
-##            pen.clear()
-##            pen.write("THANK YOU FOR PLAYING!!!", align="center", font=("Arial",32,"bold"))
-##            timer -= 1
-        win.bye()       
+        pen.goto(0,0)       
     
-#incomplete
+#Pause and Unpause
 def toggle_pause():
     global is_paused
     if game_state == "Run":
@@ -256,8 +252,7 @@ win.onkeypress(paddle_a_dn, "S")
 win.onkeypress(paddle_b_up, "Up")
 win.onkeypress(paddle_b_dn, "Down")
 
-win.onkeypress(toggle_pause,"x")
-win.onkeypress(toggle_pause,"X")
+win.onkeypress(toggle_pause," ")
 
 win.onkeypress(game_start, "y")
 win.onkeypress(game_start, "Y")
@@ -266,86 +261,102 @@ win.onkeypress(game_end, "n")
 win.onkeypress(game_end, "N")
 
 
-#try:
-while True:
-    
-    if game_state == "Start_Screen":
-        win.bgpic("Images/start_game2.gif")
-        paddle_a.ht()
-        paddle_b.ht()
-        ball.ht()
-        pen.clear()
-        pen.goto(0,200)
-        pen.color("black")
-        pen.write("Score 5 points to win.\n   Press 'Y' to Start. ", align="center", font=("Arial", 30, "italic"))
-        last_time = time.perf_counter()
+try:
+    while True:
+        win.update()
         
-    elif game_state == "Run":
-
-        if not is_paused:
-        
-            score_update()
+        if game_state == "Start_Screen":
+            win.bgpic("Images/start_game.gif")
+            paddle_a.ht()
+            paddle_b.ht()
+            ball.ht()
+            pen.goto(0,200)
+            pen.color("black")
+            pen.write("Score 5 points to win.\n   Press 'Y' to Start. ", align="center", font=("Arial", 30, "italic"))
+            pen.goto(0,-200)
+            pen.write("Space for pause.", align="center", font=("Arial",30,"italic"))
+            pen.goto(0,260)
+            last_time = time.perf_counter()
             
-            #Calculating the time elapsed between two iterations of the loop
-            current_time = time.perf_counter()
-            elapsed_time = current_time - last_time
-            last_time = current_time
+        elif game_state == "Run":
 
-            #Move the ball
-            ball.sety(ball.ycor() + ball.dy * elapsed_time)
-            ball.setx(ball.xcor() + ball.dx * elapsed_time)
-
-            #Moves the paddle till the border in the direction specified by the keys
-            #Incomplete implementation
-            #paddle_a.sety(paddle_a.ycor() + 10)
-            #paddle_b.sety(paddle_a.ycor() + 10)
-
-            #Check all conditons     
-            borderCheck()
-            paddle_a_check()
-            paddle_b_check()
-
-            #Autopilot
-            #paddle_a.sety(ball.ycor())     
-            #paddle_b.sety(ball.ycor())
-
-            #Check the winner    
-            if score_a == 5:
-                pen.clear()
-                pen.goto(0,0)
-                pen.write("Player A Wins!!!", align="center", font=("Courier", 40, "bold"))
-                winsound.PlaySound("Sounds/applause.wav",winsound.SND_FILENAME)
-                pen.clear()
-                score_a = 0
-                score_b = 0
-                pen.goto(0,260)
-                game_state = "Game_Over"
+            if not is_paused:
+            
+                score_update()
                 
-            elif score_b == 5 :
-                pen.clear()
-                pen.goto(0,0)
-                pen.write("Player B Wins!!!", align="center", font=("Courier", 40, "bold"))
-                winsound.PlaySound("Sounds/applause.wav",winsound.SND_FILENAME)
-                pen.clear()
-                score_a = 0
-                score_b = 0
-                pen.goto(0,260)
-                game_state = "Game_Over"
+                #Calculating the time elapsed between two iterations of the loop
+                current_time = time.perf_counter()
+                elapsed_time = current_time - last_time
+                last_time = current_time
 
-        elif is_paused :
-            pass
-            
-    elif game_state == "Game_Over":
-        paddle_a.ht()
-        paddle_b.ht()
-        ball.ht()
-        pen.clear()
-        pen.goto(0,-50)
-        pen.write("GAME OVER \n Play Again?\n       Y / N", align = "center",font = ("Arial",40,"bold"))
-        last_time = time.perf_counter()
+                #Move the ball
+                ball.sety(ball.ycor() + ball.dy * elapsed_time)
+                ball.setx(ball.xcor() + ball.dx * elapsed_time)
+
+                #Moves the paddle till the border in the direction specified by the keys
+                #Incomplete implementation
+                #paddle_a.sety(paddle_a.ycor() + 10)
+                #paddle_b.sety(paddle_a.ycor() + 10)
+
+                #Check all conditons     
+                borderCheck()
+                paddle_a_check()
+                paddle_b_check()
+
+                #Autopilot
+                #paddle_a.sety(ball.ycor())     
+                #paddle_b.sety(ball.ycor())
+
+                #Check the winner    
+                if score_a == 5:
+                    pen.clear()
+                    pen.goto(0,0)
+                    pen.write("Player A Wins!!!", align="center", font=("Courier", 40, "bold"))
+                    winsound.PlaySound("Sounds/applause_short.wav",winsound.SND_ASYNC)
+                    timer = 999999
+                    while(timer > 0):
+                        timer -= 0.3
+                    pen.clear()
+                    score_a = 0
+                    score_b = 0
+                    pen.goto(0,260)
+                    game_state = "Game_Over"
+                    
+                elif score_b == 5 :
+                    pen.clear()
+                    pen.goto(0,0)
+                    pen.write("Player B Wins!!!", align="center", font=("Courier", 40, "bold"))
+                    winsound.PlaySound("Sounds/applause_short.wav",winsound.SND_ASYNC)
+                    timer = 999999
+                    while(timer > 0):
+                        timer -= 0.3
+                    pen.clear()
+                    score_a = 0
+                    score_b = 0
+                    pen.goto(0,260)
+                    game_state = "Game_Over"
+
+            elif is_paused :
+                last_time = time.perf_counter()
+                
+        elif game_state == "Game_Over":
+            paddle_a.ht()
+            paddle_b.ht()
+            ball.ht()
+            pen.clear()
+            pen.goto(0,-50)
+            pen.write("GAME OVER \n Play Again?\n       Y / N", align = "center",font = ("Arial",40,"bold"))
+            last_time = time.perf_counter()
+
+        elif game_state == "Exit":
+            pen.clear()
+            pen.write("THANK YOU FOR PLAYING!!!", align="center", font=("Arial",32,""))
+            timer = 150
+            while(timer != 0):
+                timer -= 1
+            break    
         
-    win.update()
-    
-win.done()
-#except Exception:
- #   pass
+    winsound.PlaySound(None, winsound.SND_PURGE)
+    win.done()
+except Exception:
+    winsound.PlaySound(None, winsound.SND_PURGE)
