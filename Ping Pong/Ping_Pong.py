@@ -89,7 +89,7 @@ def borderCheck():
     If the ball is colliding to upper or lower boundary, a sound plays and
     the y direction of ball is flipped.
     If the ball is colliding to left or right boundary, a sound plays and
-    the ball is reset to home or position 0,0 as per the turtle module.
+    the ball is resets to random co-ordinates near Player A (if won) or Playyer B (if won).
     It also updates the scores of the players when the ball touches the opponent's
     boundary.
     The X and Y border limits are specified in borderX and borderY respectively.
@@ -198,6 +198,9 @@ def score_update():
     pen.write("Player A: {}  Player B: {}".format(score_a,score_b), align="center", font=("Courier", 24, "normal"))
     
 def game_start():
+    """
+    This function starts/restarts the game when "y" is pressed and plays a sound.
+    """
     global game_state
     winsound.PlaySound(None, winsound.SND_PURGE)
     pen.goto(0,260)
@@ -225,6 +228,9 @@ def game_start():
     winsound.PlaySound("Sounds/whistle_blow_short.wav", winsound.SND_ASYNC)
         
 def game_end():
+    """ 
+    This function changes the state of the game to Exit and cleares the screen.
+    """
     global game_state
     if game_state == "Game_Over":
         game_state = "Exit"
@@ -233,6 +239,9 @@ def game_end():
     
 #Pause and Unpause
 def toggle_pause():
+    """
+    This function toggles between pause/unpause when "p" is pressed.
+    """
     global is_paused
     if game_state == "Run":
         if is_paused == True:
@@ -240,7 +249,11 @@ def toggle_pause():
         else:
             is_paused = True
 
+##incomplete
 ##def screen_settings(x,y):
+      """
+      This function changes the state to Settings window, thus invoking the settings menu.
+      """
 ##    global game_state
 ##    if game_state == "Start_Screen":
 ##        if (x > 281 and x < 358) and (y > 273 and y < 292):
@@ -270,9 +283,10 @@ win.onkeypress(game_start, "Y")
 win.onkeypress(game_end, "n")
 win.onkeypress(game_end, "N")
 
+#Mouse binding
 #win.onscreenclick(screen_settings)
-
-     
+   
+#Game loop    
 #try:
 while True:
     win.update()
