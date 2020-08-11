@@ -4,7 +4,7 @@ import turtle
 window = turtle.Screen()
 window.bgcolor("Black")
 window.setup(500,500)
-window.title("PONG GAME")
+window.title("BREAKOUT")
 window.tracer(0)
 
 
