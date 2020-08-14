@@ -3,3 +3,5 @@
 \__pycache__
 \*.spec
 *.txt
+\.idea
+\venv
