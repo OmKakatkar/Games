@@ -1,7 +1,7 @@
 \build
 \dist
 \__pycache__
-\*.spec
+*.spec
 *.txt
 \.idea
 \venv
