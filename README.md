@@ -1,7 +1,3 @@
-# Games
-This repository consists of mini games made in Python.
+This repository contains ping pong (first successful project) made with python turtle module..
 
-## Games in repository
-*Ping Pong
-*Breakout
-*Space Invaders
+While downloading keep all the sound and image folders in the same directory as the .py file
